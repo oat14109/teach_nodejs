@@ -1,0 +1,40 @@
+version: '3'
+services:
+  basic-testnodejs-web:
+    container_name: testnodejs
+    build: .
+    ports: 
+      - 8080:8080
+    depends_on:
+      - mongo
+    environment:
+      DB_MONGO : mongo
+      DB_PORT : 27017
+      DB_NAME : test
+      DB_USERNAME : root
+      DB_PASSWORD : example
+    volumes:
+     - .:/app
+
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - dbdata:/data/db
+
+
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8090:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+
+volumes:
+  dbdata:
